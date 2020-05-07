@@ -21,29 +21,31 @@ class Player:
             # TO DO:
             # implement your policy here to return the load charged / discharged in the battery
             # below is a simple example
-            
-        if time>12 and time<18:
-            return -self.pmax
         
-        if time ==0:
-            return 0
-        if (time ==1) or (time ==2):
+        if time >0 and time <=12:
+            return self.maxload
+        
+        if time>12 and time<18:
+            return -self.max_load
+        
+
+        if (time ==0) or (time ==1) or (time ==2):
             return 0
             
         if (self.imbalance['sale_cover'][time]>0.6):
-            return -self.pmax
+            return -self.max_load
             
             
-        if (self.imbalance['sale_cover'][time]<0.6) and (self.battery_stock[time-1]>self.capacity*0.8):
+        if (self.imbalance['sale_cover'][time-1]<0.6) and (self.battery_stock[time-1]>self.capacity*0.8):
             if (self.imbalance['sale_cover'][time-1]-self.imbalance['sale_cover'][time-2])>0:
-                return -0.5*self.pmax
+                return -0.7*self.max_load
             else:
                 return self.max_load
             
-        if (self.imbalance['sale_cover'][time]<0.6) and (self.battery_stock[time-1]<self.capacity*0.8):
-            return self.pmax
+        if (self.imbalance['sale_cover'][time-1]<0.6) and (self.battery_stock[time-1]<self.capacity*0.8):
+            return self.max_load
         
-        
+        return 0
             
 
     def update_battery_stock(self, time,load):
