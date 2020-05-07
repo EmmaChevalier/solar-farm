@@ -25,6 +25,11 @@ class Player:
         if time>12 and time<18:
             return -self.pmax
         
+        if time ==0:
+            return 0
+        if (time ==1) or (time ==2):
+            return 0
+            
         if (self.imbalance['sale_cover'][time]>0.6):
             return -self.pmax
             
