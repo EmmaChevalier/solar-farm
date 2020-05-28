@@ -19,22 +19,20 @@ class Player:
         self.imbalance={"purchase_cover":[], "sale_cover": []}
 
     def take_decision(self, time):
-        if (time ==0) or (time==1):
+        if (time ==0) or (time==1) or (time ==2):
             return 0
         
-        if (self.imbalance['sale_cover'][time-1]>0.6):
-            return -self.max_load
             
         if (self.imbalance['sale_cover'][time-1]-self.imbalance['sale_cover'][time-2])>0:
             return -0.8*self.max_load
 	
         
-        if self.prices[time-1]>0.5*max(self.prices):
-           return -self.max_load
+        if self.prices[time-1]>0.8*max(self.prices) and (time>12):
+           return -self.max_load*0.5
             
             
-        if self.battery_stock[time-1]<0.5*max_load:
-            return self.max_load
+        if (self.battery_stock[time-1]<0.5*max_load) :
+            return self.max_load/3
 
         return 0
 
