@@ -19,28 +19,23 @@ class Player:
         self.imbalance={"purchase_cover":[], "sale_cover": []}
 
     def take_decision(self, time):
-        if (time==0):
-            return 0
-        if (time==1):
-            return 0
-            
-        if (time==2):
+        if (time ==0) or (time==1):
             return 0
         
-        if (self.imbalance['sale_cover'][time]>0.6):
-            return -self.pmax
+        if (self.imbalance['sale_cover'][time-1]>0.6):
+            return -self.max_load
             
-            
-        if (self.imbalance['sale_cover'][time]<0.6) and (self.battery_stock[time-1]>self.capacity*0.8):
-            if (self.imbalance['sale_cover'][time-1]-self.imbalance['sale_cover'][time-2])>0:
-                return -0.5*self.pmax
-            else:
-                return self.max_load
-            
-        if (self.imbalance['sale_cover'][time]<0.6) and (self.battery_stock[time-1]<self.capacity*0.8):
-            return self.pmax
+        if (self.imbalance['sale_cover'][time-1]-self.imbalance['sale_cover'][time-2])>0:
+            return -0.8*self.max_load
+	
         
-        
+        if self.prices[time-1]>0.5*max(self.prices):
+           return -self.max_load
+            
+            
+        if self.battery_stock[time-1]<0.5*max_load:
+            return self.max_load
+
         return 0
 
     def update_battery_stock(self, time,load):
